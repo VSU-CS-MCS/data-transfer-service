@@ -1,8 +1,11 @@
 from nltk.tokenize import word_tokenize
 import pandas as pd
 
+nltk.download('punkt')
+
+
 # Считываем данные из файла "keywords.xlsx"
-df = pd.read_excel('src/main/resources/data/keywords.xlsx')
+df = pd.read_excel('keywords.xlsx')
 
 # Создаем словарь, где ключами являются эмоции, а значениями - списки ключевых слов
 keywords_dict = {}
@@ -39,7 +42,7 @@ def analyze_text_emotions(text):
 
 
 text = ""
-with open('src/main/resources/data/textForAnalysis.txt', 'r') as file:
+with open('textForAnalysis.txt', 'r') as file:
     text = file.read()
 
 emotions = analyze_text_emotions(text)
