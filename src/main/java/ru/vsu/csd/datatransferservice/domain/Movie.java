@@ -1,11 +1,16 @@
 package ru.vsu.csd.datatransferservice.domain;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+import lombok.EqualsAndHashCode;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import ru.vsu.csd.datatransferservice.repos.MovieRepo;
+
+import java.util.List;
 
 @Entity
+@Table
+@EqualsAndHashCode(of = "id")
 public class Movie {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -18,6 +23,36 @@ public class Movie {
     private double emotionalColoringAnger;
     private double emotionalColoringDisgust;
     private double emotionalColoringFear;
+
+    public Movie() {
+    }
+
+    public Movie(String title, String yearRelease, String review,
+                 double emotionalColoringJoy,
+                 double emotionalColoringSadness,
+                 double emotionalColoringAnger,
+                 double emotionalColoringDisgust,
+                 double emotionalColoringFear) {
+        this.title = title;
+        this.yearRelease = yearRelease;
+        this.review = review;
+        this.emotionalColoringJoy = emotionalColoringJoy;
+        this.emotionalColoringSadness = emotionalColoringSadness;
+        this.emotionalColoringAnger = emotionalColoringAnger;
+        this.emotionalColoringDisgust = emotionalColoringDisgust;
+        this.emotionalColoringFear = emotionalColoringFear;
+    }
+
+    public Movie(String title, String yearRelease, String review, double[] emotionalColoring) throws Exception {
+        this.title = title;
+        this.yearRelease = yearRelease;
+        this.review = review;
+        this.setEmotionalColoring(emotionalColoring);
+    }
+
+    public Long getId() {
+        return id;
+    }
 
     public String getTitle() {
         return title;
