@@ -43,7 +43,11 @@ public class DataTransferController {
     }
 
     @DeleteMapping("{id}")
-    public void delete(@PathVariable("id") Movie movie) {
-        movieRepo.delete(movie);
+    public void delete(@PathVariable("id") String id) {
+        if (id.equals("all")) {
+            movieRepo.deleteAll();
+        } else {
+            movieRepo.deleteById(Long.parseLong(id));
+        }
     }
 }
