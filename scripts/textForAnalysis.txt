@@ -1,0 +1,7 @@
+LINQ (Language-Integrated Query) technology is part of .NET Framework, which allows developers to use the query language built into C# and other languages.NET, for extracting and processing data from various data sources, including collections of objects, databases, XML documents and other data sources.
+
+LINQ provides syntactic sugar that allows developers to write simpler and more readable code, making it easier to write data queries. LINQ queries consist of three parts: a query operator, a data source, and a selection. Query operators such as Where, Select, GroupBy, etc. provide various methods for extracting and processing data.
+
+LINQ also supports deferred data loading, which allows you to optimize performance when processing large amounts of data. LINQ also supports query compilation, which can speed up query execution and reduce the load on the server.
+
+In general, LINQ technology is a powerful tool for working with data in .NET applications, and greatly simplifies the process of extracting and processing data.
