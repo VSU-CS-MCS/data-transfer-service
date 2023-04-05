@@ -10,7 +10,7 @@ import ru.vsu.csd.datatransferservice.repos.MovieRepository;
 import java.util.List;
 
 @RestController
-@RequestMapping("data_transfer")
+@RequestMapping("data-transfer")
 public class DataTransferController {
     private final MovieRepository movieRepo;
 
