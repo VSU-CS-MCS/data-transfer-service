@@ -31,7 +31,6 @@ public class DataTransferController {
 
     @PostMapping
     public Movie create(@RequestBody Movie movie) {
-        System.out.println(movie); //todo create logs
         return movieRepo.save(movie);
     }
 
