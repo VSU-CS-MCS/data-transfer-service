@@ -30,23 +30,28 @@ public class DataTransferController {
     }
 
     @PostMapping
-    public Movie create(@RequestBody Movie movie) {
+    public Movie createMovie(@RequestBody Movie movie) {
         return movieRepo.save(movie);
     }
 
     @PutMapping("{id}")
-    public Movie update(@PathVariable("id") Movie movieFromDb, @RequestBody Movie movie) {
+    public Movie updateMovie(@PathVariable("id") Movie movieFromDb, @RequestBody Movie movie) {
         BeanUtils.copyProperties(movie, movieFromDb, "id");
 
         return movieRepo.save(movieFromDb);
     }
 
     @DeleteMapping("{id}")
-    public void delete(@PathVariable("id") String id) {
+    public void deleteMovie(@PathVariable("id") Long id) {
         if (id.equals("all")) {
             movieRepo.deleteAll();
         } else {
-            movieRepo.deleteById(Long.parseLong(id));
+            movieRepo.deleteById(id);
         }
+    }
+
+    @DeleteMapping("all")
+    public void deleteAllMovies() {
+        movieRepo.deleteAll();
     }
 }

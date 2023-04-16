@@ -3,6 +3,7 @@ package ru.vsu.csd.datatransferservice.domain;
 import jakarta.persistence.*;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
+import ru.vsu.csd.datatransferservice.exception.IncorrectArrayLengthException;
 
 import java.util.Random;
 
@@ -128,7 +129,7 @@ public class Movie {
 
     public void setEmotionalColoring(double[] emotionalColoring) throws Exception {
         if (emotionalColoring.length != 5) {
-            throw new Exception("incorrect number of elements in the array");
+            throw new IncorrectArrayLengthException();
         }
 
         emotionalColoringJoy = emotionalColoring[0];
