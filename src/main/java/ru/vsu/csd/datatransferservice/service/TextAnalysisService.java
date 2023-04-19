@@ -36,7 +36,6 @@ public class TextAnalysisService {
                 }
             }
 
-
             // Создаем процесс-строитель
             System.out.println("Python Script run");
             ProcessBuilder pb = new ProcessBuilder("python", "script/analysis-emotional-coloring.py", text);

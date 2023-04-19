@@ -5,6 +5,11 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import ru.vsu.csd.datatransferservice.exception.IncorrectArrayLengthException;
 
+import java.io.*;
+import java.net.HttpURLConnection;
+import java.net.ProtocolException;
+import java.net.URL;
+import java.util.ArrayList;
 import java.util.Random;
 
 @Entity
@@ -17,6 +22,7 @@ public class Movie {
     private Long id;
     private String title;
     private String yearRelease;
+    @Column(name = "review", length = -1)
     private String review;
     private double emotionalColoringJoy;
     private double emotionalColoringSadness;
@@ -25,29 +31,6 @@ public class Movie {
     private double emotionalColoringFear;
 
     public Movie() {
-    }
-
-    public Movie(
-            String title,
-            String yearRelease,
-            String review,
-            double[] emotionalColoring
-    ) throws Exception {
-        this.title = title;
-        this.yearRelease = yearRelease;
-        this.review = review;
-        this.setEmotionalColoring(emotionalColoring);
-    }
-
-    public Movie(
-            String title,
-            String yearRelease,
-            String review
-    ) throws Exception {
-        this.title = title;
-        this.yearRelease = yearRelease;
-        this.review = review;
-        this.setEmotionalColoring(analysisEmotionalColoring(review));
     }
 
     public Long getId() {
@@ -119,7 +102,7 @@ public class Movie {
     }
 
     public double[] getEmotional() {
-        return new double[] {
+        return new double[]{
                 emotionalColoringJoy,
                 emotionalColoringSadness,
                 emotionalColoringAnger,
@@ -127,27 +110,51 @@ public class Movie {
                 emotionalColoringFear};
     }
 
-    public void setEmotionalColoring(double[] emotionalColoring) throws Exception {
-        if (emotionalColoring.length != 5) {
+    public void setEmotionalColoring(ArrayList<Double> emotionalColoring) {
+        if (emotionalColoring.size() != 5) {
             throw new IncorrectArrayLengthException();
         }
 
-        emotionalColoringJoy = emotionalColoring[0];
-        emotionalColoringSadness = emotionalColoring[1];
-        emotionalColoringAnger = emotionalColoring[2];
-        emotionalColoringDisgust = emotionalColoring[3];
-        emotionalColoringFear = emotionalColoring[4];
+        emotionalColoringJoy = emotionalColoring.get(0);
+        emotionalColoringSadness = emotionalColoring.get(1);
+        emotionalColoringAnger = emotionalColoring.get(2);
+        emotionalColoringDisgust = emotionalColoring.get(3);
+        emotionalColoringFear = emotionalColoring.get(4);
     }
 
-    public double[] analysisEmotionalColoring(String review) {
-        Random random = new Random();
-        double[] randomArray = new double[5];
+    public ArrayList<Double> analysisEmotionalColoring(String review) {
+        ArrayList<Double> result = new ArrayList<Double>();
 
-        for (int i = 0; i < 5; i++) {
-            double randomNumber = random.nextDouble() * 2 - 1;
-            randomArray[i] = randomNumber;
+        try {
+            URL url = new URL("http://localhost:9000/text-for-analysis");
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+
+            // set request method and headers
+            connection.setRequestMethod("POST");
+            connection.setRequestProperty("Content-Type", "application/json");
+
+            // set request body
+            String requestBody = review;
+            connection.setDoOutput(true);
+            connection.getOutputStream().write(requestBody.getBytes());
+
+            // read response
+            BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            StringBuilder response = new StringBuilder();
+            String line;
+            while ((line = reader.readLine()) != null) {
+                response.append(line);
+            }
+            reader.close();
+
+            for (String stringResult :
+                    response.toString().substring(1, response.toString().length()-1).split(",")) {
+                result.add(Double.parseDouble(stringResult));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
-        return randomArray;
+        return result;
     }
 }

@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import ru.vsu.csd.datatransferservice.domain.Movie;
 import ru.vsu.csd.datatransferservice.repos.MovieRepository;
+import ru.vsu.csd.datatransferservice.service.DataTransferService;
 
 import java.util.List;
 
@@ -31,7 +32,7 @@ public class DataTransferController {
 
     @PostMapping
     public Movie createMovie(@RequestBody Movie movie) {
-        return movieRepo.save(movie);
+        return movieRepo.save(DataTransferService.createMovie(movie));
     }
 
     @PutMapping("{id}")
@@ -43,11 +44,7 @@ public class DataTransferController {
 
     @DeleteMapping("{id}")
     public void deleteMovie(@PathVariable("id") Long id) {
-        if (id.equals("all")) {
-            movieRepo.deleteAll();
-        } else {
-            movieRepo.deleteById(id);
-        }
+        movieRepo.deleteById(id);
     }
 
     @DeleteMapping("all")
