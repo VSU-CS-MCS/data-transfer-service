@@ -14,6 +14,7 @@ import java.util.stream.Collectors;
 
 @Service
 public class TextAnalysisService {
+    private static boolean libraryLoad = false;
     public TextAnalysisService() {
     }
 
@@ -22,10 +23,19 @@ public class TextAnalysisService {
 
         try {
             // Установка библиотек
-            System.out.println("Importing libraries");
-            ProcessBuilder pbd = new ProcessBuilder("pip", "install", "nltk", "pandas", "sys");
-            Process install = pbd.start();
-            install.waitFor();
+            if (!libraryLoad) {
+                try {
+                    System.out.println("Importing libraries");
+                    ProcessBuilder pbd = new ProcessBuilder("pip", "install", "nltk", "pandas", "sys");
+                    Process install = pbd.start();
+                    install.waitFor();
+                    libraryLoad = true;
+                }
+                catch (Exception ex) {
+                    throw new RuntimeException(ex);
+                }
+            }
+
 
             // Создаем процесс-строитель
             System.out.println("Python Script run");
