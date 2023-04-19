@@ -13,8 +13,12 @@ import java.util.List;
 @RestController
 @RequestMapping("text-for-analysis")
 public class TextAnalysisController {
+    private TextAnalysisService textAnalysisService;
+
     @Autowired
-    private TextAnalysisService textAnalysisService ;
+    public TextAnalysisController(TextAnalysisService textAnalysisService) {
+        this.textAnalysisService = textAnalysisService;
+    }
 
     @PostMapping()
     public ArrayList<Double> analyzeText(@RequestBody String text) {

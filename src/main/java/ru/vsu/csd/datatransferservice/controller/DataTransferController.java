@@ -9,20 +9,23 @@ import ru.vsu.csd.datatransferservice.repos.MovieRepository;
 import ru.vsu.csd.datatransferservice.service.DataTransferService;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("data-transfer")
 public class DataTransferController {
-    private final MovieRepository movieRepo;
+    private MovieRepository movieRepository;
+    private DataTransferService dataTransferService;
 
     @Autowired
-    public DataTransferController(MovieRepository movieRepo) {
-        this.movieRepo = movieRepo;
+    public DataTransferController(MovieRepository movieRepository, DataTransferService dataTransferService) {
+        this.movieRepository = movieRepository;
+        this.dataTransferService = dataTransferService;
     }
 
     @GetMapping
     public List<Movie> getMovies() {
-        return movieRepo.findAll();
+        return movieRepository.findAll();
     }
 
     @GetMapping("{id}")
@@ -30,25 +33,30 @@ public class DataTransferController {
         return movie;
     }
 
+    @GetMapping("moviesForEmotions")
+    public List<Movie> getMovieForEmotions(@RequestBody Map<String, Object> request) {
+        return dataTransferService.getMovieForEmotions(request);
+    }
+
     @PostMapping
     public Movie createMovie(@RequestBody Movie movie) {
-        return movieRepo.save(DataTransferService.createMovie(movie));
+        return movieRepository.save(dataTransferService.createMovie(movie));
     }
 
     @PutMapping("{id}")
     public Movie updateMovie(@PathVariable("id") Movie movieFromDb, @RequestBody Movie movie) {
         BeanUtils.copyProperties(movie, movieFromDb, "id");
 
-        return movieRepo.save(movieFromDb);
+        return movieRepository.save(movieFromDb);
     }
 
     @DeleteMapping("{id}")
     public void deleteMovie(@PathVariable("id") Long id) {
-        movieRepo.deleteById(id);
+        movieRepository.deleteById(id);
     }
 
     @DeleteMapping("all")
     public void deleteAllMovies() {
-        movieRepo.deleteAll();
+        movieRepository.deleteAll();
     }
 }
