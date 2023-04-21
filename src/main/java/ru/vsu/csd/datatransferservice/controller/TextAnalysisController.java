@@ -7,8 +7,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import ru.vsu.csd.datatransferservice.service.TextAnalysisService;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -17,7 +15,7 @@ public class TextAnalysisController {
     @Autowired
     private TextAnalysisService textAnalysisService ;
 
-    @PostMapping()
+    @PostMapping("analyze")
     public Map<String, Double> analyzeText(@RequestBody String text) {
         return textAnalysisService.startAnalysis(text);
     }
