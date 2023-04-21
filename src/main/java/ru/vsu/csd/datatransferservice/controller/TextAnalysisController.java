@@ -9,6 +9,7 @@ import ru.vsu.csd.datatransferservice.service.TextAnalysisService;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("text-for-analysis")
@@ -17,7 +18,7 @@ public class TextAnalysisController {
     private TextAnalysisService textAnalysisService ;
 
     @PostMapping()
-    public ArrayList<Double> analyzeText(@RequestBody String text) {
+    public Map<String, Double> analyzeText(@RequestBody String text) {
         return textAnalysisService.startAnalysis(text);
     }
 }
