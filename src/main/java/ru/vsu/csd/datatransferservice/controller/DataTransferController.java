@@ -23,12 +23,12 @@ public class DataTransferController {
         this.dataTransferService = dataTransferService;
     }
 
-    @GetMapping
+    @GetMapping("movies")
     public List<Movie> getMovies() {
         return movieRepository.findAll();
     }
 
-    @GetMapping("{id}")
+    @GetMapping("movies/{id}")
     public Movie getMovie(@PathVariable("id") Movie movie) {
         return movie;
     }
@@ -43,19 +43,19 @@ public class DataTransferController {
         return movieRepository.save(dataTransferService.createMovie(movie));
     }
 
-    @PutMapping("{id}")
+    @PutMapping("movies/{id}")
     public Movie updateMovie(@PathVariable("id") Movie movieFromDb, @RequestBody Movie movie) {
         BeanUtils.copyProperties(movie, movieFromDb, "id");
 
         return movieRepository.save(movieFromDb);
     }
 
-    @DeleteMapping("{id}")
+    @DeleteMapping("movies/{id}")
     public void deleteMovie(@PathVariable("id") Long id) {
         movieRepository.deleteById(id);
     }
 
-    @DeleteMapping("all")
+    @DeleteMapping("movies")
     public void deleteAllMovies() {
         movieRepository.deleteAll();
     }

@@ -1,5 +1,6 @@
 package ru.vsu.csd.datatransferservice.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
@@ -105,6 +106,7 @@ public class Movie {
         this.emotionalColoringFear = emotionalColoringFear;
     }
 
+    @JsonIgnore
     public double[] getEmotional() {
         return new double[]{
                 emotionalColoringJoy,
