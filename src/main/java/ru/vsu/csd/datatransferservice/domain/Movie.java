@@ -132,7 +132,7 @@ public class Movie {
         ArrayList<Double> result = new ArrayList<Double>();
 
         try {
-            URL url = new URL("http://localhost:9000/text-for-analysis");
+            URL url = new URL("http://localhost:9000/text-for-analysis/analyze");
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 
             // set request method and headers
@@ -155,7 +155,7 @@ public class Movie {
 
             for (String stringResult :
                     response.toString().substring(1, response.toString().length()-1).split(",")) {
-                result.add(Double.parseDouble(stringResult));
+                result.add(Double.parseDouble(stringResult.split(":")[1]));
             }
         } catch (Exception e) {
             e.printStackTrace();
